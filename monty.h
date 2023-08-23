@@ -41,4 +41,6 @@ typedef struct instruction_s
         void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
+void read_monty_file(const char *filename);
+
 #endif
