@@ -7,13 +7,13 @@
  */
 void handle_add(stack_t **head, unsigned int line_number)
 {
-    if (*head == NULL || (*head)->next == NULL)
-    {
-        dprintf(2, "L%d: can't add, stack too short\n", line_number);
-        free_all(*head);
-        exit(EXIT_FAILURE);
-    }
+	if (*head == NULL || (*head)->next == NULL)
+	{
+		dprintf(2, "L%d: can't add, stack too short\n", line_number);
+		free_all(*head);
+		exit(EXIT_FAILURE);
+	}
 
-    (*head)->next->n += (*head)->n;
-    handle_pop(head, line_number);
+	(*head)->next->n += (*head)->n;
+	handle_pop(head, line_number);
 }
