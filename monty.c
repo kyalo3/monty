@@ -119,14 +119,10 @@ void execute_cmds(char *line, unsigned int line_number)
 		}
 		if (ops[j].opcode == NULL)
 		{
-			if (instruction[0] != '#')
-			{
-				free(args);
-				free_all();
-				dprintf(2, "L%d: unknown instruction %s\n", line_number, instruction);
-				exit(EXIT_FAILURE);
-			}
-			break;
+			free(args);
+			free_all();
+			dprintf(2, "L%d: unknown instruction %s\n", line_number, instruction);
+			exit(EXIT_FAILURE);
 		}
 	}
 	free(args);
