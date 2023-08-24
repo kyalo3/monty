@@ -6,13 +6,12 @@
  * execute_cmds - executes monty command
  */
 
-void execute_cmds(char *line)
+void execute_cmds(char *line, stack_t **stack, unsigned int line_number)
 {
 	char *args[MAX_LINE_LENGTH] = {NULL}, *token;
-	stack_t *stack = NULL;
-	int ac, i, j, fintarg;
+	int ac, i = 0, j;
 
-	opcodeF_t ops[] = {
+	instruction_t ops[] = {
 		{"push", handle_push},
 		{"pall", handle_pall},
 		{"pint", handle_pint},
@@ -33,20 +32,21 @@ void execute_cmds(char *line)
 		}
 		args[ac] = NULL;
 
-		for (i = 0; args[i]; i++)
+		while (args[i] != NULL)
 		{
-			for (j = 0; ops[j].opcode != NULL; j++)
+			j = 0;
+			while (ops[j].opcode != NULL)
 			{
-				if (strcmp(args[i], ops[j].opcode) == 0)
+				if (strcmp(ops[j].opcode, args[i]) == 0)
 				{
 					i++;
-					ops[j].func(stack, args[i]);
+					ops[j].f(stack, atoi(args[i]));
 				}
-				else
-				{
-					break;
-				}
+				j++;
 			}
+			i++;
+			dprintf(2, "L%d: unknown instruction %s\n", line_number, args[i]);
+			exit(EXIT_FAILURE);
 		}
 	}
 }
@@ -58,6 +58,8 @@ void read_monty_file(const char *filename)
 {
 	ssize_t fd, chars_read, chars_written;
 	char buffer[BUFFERSIZE], *line;
+	int line_number = 1;
+	stack_t *stack = NULL;
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
@@ -72,8 +74,9 @@ void read_monty_file(const char *filename)
 
 		while (line != NULL)
 		{
-			execute_cmd(line);
+			execute_cmds(line, &stack, line_number);
 			line = strtok(NULL, "\n");
+			line_number++;
 		}
 	}
 	close(fd);

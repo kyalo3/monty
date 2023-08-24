@@ -12,16 +12,6 @@
 #include <ctype.h>
 
 /**
- * struct opcodeF - opcode and its respective function
- * @opcode: the opcode
- * @func: the function
- */
-typedef struct opcodeF_s
-{
-        char *opcode;
-        void (*func)(stack_t **stack, unsigned int line_number);
-} opcodeF_t;
-/**
  * struct stack_s - doubly linked list representation of a stack (or queue)
  * @n: integer
  * @prev: points to the previous element of the stack (or queue)
@@ -52,6 +42,7 @@ typedef struct instruction_s
 } instruction_t;
 
 void read_monty_file(const char *filename);
+void execute_cmds(char *line, stack_t **stack, unsigned int line_number);
 void handle_push(stack_t **head, unsigned int number);
 void handle_pall(stack_t **head, unsigned int number);
 void handle_pint(stack_t **head, unsigned int number);
