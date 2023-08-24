@@ -12,6 +12,7 @@ void handle_pint(stack_t **stack, unsigned int line_number)
 	(void)line_number;
 	if (current == NULL)
 	{
+		free_all();
 		dprintf(2, "L%d: can't pint, stack empty\n", line_number);
 		exit(EXIT_FAILURE);
 	}

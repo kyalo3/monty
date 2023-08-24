@@ -16,6 +16,7 @@ void handle_pop(stack_t **head, unsigned int line_number)
 
 	if (*head == NULL)
 	{
+		free_all();
 		dprintf(2, "L%d: can't pop an empty stack\n", line_number);
 		exit(EXIT_FAILURE);
 	}

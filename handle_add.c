@@ -9,6 +9,7 @@ void handle_add(stack_t **head, unsigned int line_number)
 {
 	if (*head == NULL || (*head)->next == NULL)
 	{
+		free_all();
 		dprintf(2, "L%d: can't add, stack too short\n", line_number);
 		exit(EXIT_FAILURE);
 	}
