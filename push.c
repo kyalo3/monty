@@ -38,7 +38,7 @@ void handle_push(stack_t **head, unsigned int line_number)
 	stack_t *new_node;
 	int n_value;
 
-	if (arg == NULL || !is_integer(arg))
+	if (arg == NULL || is_integer(arg))
 	{
 		dprintf(2, "L%d: usage: push integer\n", line_number);
 		exit(EXIT_FAILURE);

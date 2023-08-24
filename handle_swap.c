@@ -1,5 +1,4 @@
 #include "monty.h"
-
 /**
  * handle_swap - swaps the top two elements of the stack
  * @head: double pointer to the head of the stack
