@@ -3,56 +3,6 @@
 char *value = "";
 stack_t **stack;
 
-/**
- * execute_cmds - executes monty command
- * @line: line with opcodes
- * @stack: pointer to stack to be used
- * @line_number: monty instructions line number
- */
-
-void execute_cmds(char *line, unsigned int line_number)
-{
-	char *args[MAX_LINE_LENGTH] = {NULL}, *token, *instruction;
-	int ac, i = 0, j = 0;
-
-	instruction_t ops[] = {
-		{"push", handle_push},
-		{"pall", handle_pall},
-		{"pint", handle_pint},
-		{"padd", handle_add},
-		{NULL, NULL}};
-
-	token = strtok(line, " \t");
-	ac = 0;
-	while (token != NULL && ac < MAX_LINE_LENGTH - 1)
-	{
-		args[ac] = token;
-		ac++;
-		token = strtok(NULL, " \t");
-	}
-	args[ac] = NULL;
-	while (args[i] != NULL)
-	{
-		j = 0;
-		instruction = args[i];
-		value = args[(i + 1)];
-		while (ops[j].opcode != NULL)
-		{
-			if (strcmp(ops[j].opcode, instruction) == 0)
-			{
-				i += 2;
-				ops[j].f(stack, line_number);
-				break;
-			}
-			j++;
-		}
-		if (ops[j].opcode == NULL)
-		{
-			dprintf(2, "L%d: unknown instruction %s\n", line_number, instruction);
-			exit(EXIT_FAILURE);
-		}
-	}
-}
 
 /**
  * read_monty_file - reads a monty file
@@ -127,26 +77,36 @@ char **tokenize_line(char *line)
 	return (args);
 }
 
+
 /**
  * execute_cmds - executes monty command
  * @line: line with opcodes
  * @line_number: monty instructions line number
  */
 
-/*void execute_cmds(char *line, unsigned int line_number)
+void execute_cmds(char *line, unsigned int line_number)
 {
-	char *instruction, **args;
-	int i = 0, j = 0;
+	char *args[MAX_LINE_LENGTH] = {NULL}, *token, *instruction;
+	int ac, i = 0, j = 0;
+
 	instruction_t ops[] = {
 		{"push", handle_push},
 		{"pall", handle_pall},
-		{"pop", handle_pop},
 		{"pint", handle_pint},
-		{"add", handle_add},
+		{"padd", handle_add},
+		{"pop", handle_pop},
 		{"swap", handle_swap},
 		{NULL, NULL}};
 
-	args = tokenize_line(line);
+	token = strtok(line, " \t");
+	ac = 0;
+	while (token != NULL && ac < MAX_LINE_LENGTH - 1)
+	{
+		args[ac] = token;
+		ac++;
+		token = strtok(NULL, " \t");
+	}
+	args[ac] = NULL;
 	while (args[i] != NULL)
 	{
 		j = 0;
@@ -165,7 +125,4 @@ char **tokenize_line(char *line)
 		if (ops[j].opcode == NULL)
 		{
 			dprintf(2, "L%d: unknown instruction %s\n", line_number, instruction);
-			exit(EXIT_FAILURE);
-		}
-	}
-}*/
+			exit(EXIT_FAILURE);	}}}
