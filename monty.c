@@ -4,7 +4,6 @@ char *value = "";
 stack_t **stack;
 
 /**
-<<<<<<< HEAD
  * execute_cmds - executes monty command
  * @line: line with opcodes
  * @stack: pointer to stack to be used
@@ -56,8 +55,6 @@ void execute_cmds(char *line, unsigned int line_number)
 }
 
 /**
-=======
->>>>>>> main
  * read_monty_file - reads a monty file
  * @filename: file to read
  */
@@ -136,7 +133,7 @@ char **tokenize_line(char *line)
  * @line_number: monty instructions line number
  */
 
-void execute_cmds(char *line, unsigned int line_number)
+/*void execute_cmds(char *line, unsigned int line_number)
 {
 	char *instruction, **args;
 	int i = 0, j = 0;
@@ -171,4 +168,4 @@ void execute_cmds(char *line, unsigned int line_number)
 			exit(EXIT_FAILURE);
 		}
 	}
-}
+}*/

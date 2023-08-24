@@ -2,7 +2,6 @@
 #include <stdbool.h>
 
 /**
-<<<<<<< HEAD
  * is_integer - checks if a string represents a valid integer
  * Desc: checks if a strig rep a valid integer
  * @str: string
@@ -22,16 +21,13 @@ bool is_integer(const char *str)
 	for (; str[i] != '\0'; i++)
 	{
 		if (!isdigit(str[i]))
-
-		return (false);
+			return (false);
 	}
 
 	return (true);
 }
 
 /**
-=======
->>>>>>> main
  * handle_push - adds n element to the top of the stack
  * @head: pointer to the head of a stack
  * @line_number: line number of the monty instructions file
@@ -42,7 +38,7 @@ void handle_push(stack_t **head, unsigned int line_number)
 	stack_t *new_node;
 	int n_value;
 
-	if (arg == NULL)
+	if (arg == NULL || is_integer(arg))
 	{
 		dprintf(2, "L%d: usage: push integer\n", line_number);
 		exit(EXIT_FAILURE);
