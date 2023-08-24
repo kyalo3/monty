@@ -9,10 +9,8 @@ stack_t **stack;
 /**
  * execute_cmds - executes monty command
  * @line: line with opcodes
- * @stack: pointer to stack to be used
  * @line_number: monty instructions line number
  */
-
 void execute_cmds(char *line, unsigned int line_number)
 {
 	char *args[MAX_LINE_LENGTH] = {NULL}, *token, *instruction;
@@ -59,7 +57,6 @@ void execute_cmds(char *line, unsigned int line_number)
  * read_monty_file - reads a monty file
  * @filename: file to read
  */
-
 void read_monty_file(const char *filename)
 {
 	int fd;
