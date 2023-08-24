@@ -50,6 +50,13 @@ void handle_pall(stack_t **head, unsigned int line_number);
 void handle_pint(stack_t **head, unsigned int line_number);
 void handle_swap(stack_t **head, unsigned int line_number);
 void handle_pop(stack_t **head, unsigned int line_number);
+void handle_mod(stack_t **head, unsigned int line_number);
+void handle_add(stack_t **head, unsigned int line_number);
+void handle_sub(stack_t **head, unsigned int line_number);
+void handle_mul(stack_t **head, unsigned int line_number);
+void handle_div(stack_t **head, unsigned int line_number);
+void handle_nop(stack_t **head, unsigned int line_number);
 
 extern stack_t **stack;
+
 #endif
