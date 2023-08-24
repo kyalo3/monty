@@ -18,8 +18,13 @@ void read_monty_file(const char *filename)
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
+		free_all();
 		dprintf(2, "Error: Can't open file %s\n", filename);
 		exit(EXIT_FAILURE);
+	}
+	for (i = 0; i < MAX_LINES; i++)
+	{
+		lines[i] = NULL;
 	}
 	while ((chars_read = read(fd, buffer, BUFFERSIZE)) > 0 &&
 		   line_number < MAX_LINES)
@@ -37,6 +42,7 @@ void read_monty_file(const char *filename)
 				{
 					free(lines[i]);
 				}
+				free_all();
 				exit(EXIT_FAILURE);
 			}
 			line = strtok(NULL, "\n");
@@ -46,6 +52,10 @@ void read_monty_file(const char *filename)
 		{
 			execute_cmds(lines[i], (i + 1));
 		}
+	}
+	for (i = 0; i < line_number; i++)
+	{
+		free(lines[i]);
 	}
 	close(fd);
 }
@@ -58,11 +68,17 @@ char **tokenize_line(char *line)
 {
 	char **args = (char **)malloc((MAX_LINE_LENGTH + 1) * sizeof(char *));
 	char *token;
-	int ac = 0;
+	int ac = 0, i;
 
 	if (args == NULL)
 	{
-		return (NULL);
+		free_all();
+		dprintf(2, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
+	}
+	for (i = 0; i < MAX_LINE_LENGTH + 1; i++)
+	{
+		args[i] = NULL;
 	}
 	token = strtok(line, " \t");
 	while (token != NULL && ac < MAX_LINE_LENGTH - 1)
@@ -72,7 +88,6 @@ char **tokenize_line(char *line)
 		token = strtok(NULL, " \t");
 	}
 	args[ac] = NULL;
-
 	return (args);
 }
 
@@ -113,8 +128,11 @@ void execute_cmds(char *line, unsigned int line_number)
 		}
 		if (ops[j].opcode == NULL)
 		{
+			free(args);
+			free_all();
 			dprintf(2, "L%d: unknown instruction %s\n", line_number, instruction);
 			exit(EXIT_FAILURE);
 		}
 	}
+	free(args);
 }

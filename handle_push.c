@@ -37,6 +37,7 @@ void handle_push(stack_t **head, unsigned int line_number)
 
 	if (arg == NULL || !is_integer(arg))
 	{
+		free_all();
 		dprintf(2, "L%d: usage: push integer\n", line_number);
 		exit(EXIT_FAILURE);
 	}
@@ -46,6 +47,7 @@ void handle_push(stack_t **head, unsigned int line_number)
 
 	if (!new_node)
 	{
+		free_all();
 		dprintf(2, "Error: malloc failed\n");
 		exit(EXIT_FAILURE);
 	}
