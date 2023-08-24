@@ -43,10 +43,10 @@ typedef struct instruction_s
 
 void read_monty_file(const char *filename);
 void execute_cmds(char *line, stack_t **stack, unsigned int line_number);
-void handle_push(stack_t **head, unsigned int number);
-void handle_pall(stack_t **head, unsigned int number);
-void handle_pint(stack_t **head, unsigned int number);
-void handle_swap(stack_t **head, unsigned int number);
-void handle_pop(stack_t **head, unsigned int number);
+void handle_push(stack_t **head, int number);
+void handle_pall(stack_t **head, int number);
+void handle_pint(stack_t **head, int number);
+void handle_swap(stack_t **head, int number);
+void handle_pop(stack_t **head, int number);
 
 #endif
