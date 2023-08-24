@@ -2,6 +2,9 @@
 #define MONTY_H
 
 #define _GNU_SOURCE
+#define BUFFERSIZE 1024
+#define MAX_LINE_LENGTH 256
+#define MAX_LINES 1000
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -40,7 +43,7 @@ typedef struct stack_s
 typedef struct instruction_s
 {
         char *opcode;
-        void (*f)(stack_t **stack, int line_number);
+        void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
 void read_monty_file(const char *filename);

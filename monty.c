@@ -1,59 +1,7 @@
 #include "monty.h"
-#define BUFFERSIZE 1024
-#define MAX_LINE_LENGTH 256
-#define MAX_LINES 1000
 
 char *value = "";
 stack_t **stack;
-
-/**
- * execute_cmds - executes monty command
- * @line: line with opcodes
- * @stack: pointer to stack to be used
- * @line_number: monty instructions line number
- */
-
-void execute_cmds(char *line, unsigned int line_number)
-{
-	char *args[MAX_LINE_LENGTH] = {NULL}, *token, *instruction;
-	int ac, i = 0, j = 0;
-
-	instruction_t ops[] = {
-		{"push", handle_push},
-		{"pall", handle_pall},
-		{NULL, NULL}};
-
-	token = strtok(line, " \t");
-	ac = 0;
-	while (token != NULL && ac < MAX_LINE_LENGTH - 1)
-	{
-		args[ac] = token;
-		ac++;
-		token = strtok(NULL, " \t");
-	}
-	args[ac] = NULL;
-	while (args[i] != NULL)
-	{
-		j = 0;
-		instruction = args[i];
-		value = args[(i + 1)];
-		while (ops[j].opcode != NULL)
-		{
-			if (strcmp(ops[j].opcode, instruction) == 0)
-			{
-				i += 2;
-				ops[j].f(stack, line_number);
-				break;
-			}
-			j++;
-		}
-		if (ops[j].opcode == NULL)
-		{
-			dprintf(2, "L%d: unknown instruction %s\n", line_number, instruction);
-			exit(EXIT_FAILURE);
-		}
-	}
-}
 
 /**
  * read_monty_file - reads a monty file
@@ -74,7 +22,8 @@ void read_monty_file(const char *filename)
 		dprintf(2, "Error: Can't open file %s\n", filename);
 		exit(EXIT_FAILURE);
 	}
-	while ((chars_read = read(fd, buffer, BUFFERSIZE)) > 0 && line_number < MAX_LINES)
+	while ((chars_read = read(fd, buffer, BUFFERSIZE)) > 0 &&
+		   line_number < MAX_LINES)
 	{
 		buffer[chars_read] = '\0';
 		line = strtok(buffer, "\n");
@@ -101,35 +50,72 @@ void read_monty_file(const char *filename)
 	}
 	close(fd);
 }
+/**
+ * tokenize_line - breaks line into small tokens
+ * @line:line to be tokenized
+ * Return: pointer to the args array containing tokens
+ */
+char **tokenize_line(char *line)
+{
+	char **args = (char **)malloc((MAX_LINE_LENGTH + 1) * sizeof(char *));
+	char *token;
+	int ac = 0;
+
+	if (args == NULL)
+	{
+		return (NULL);
+	}
+	token = strtok(line, " \t");
+	while (token != NULL && ac < MAX_LINE_LENGTH - 1)
+	{
+		args[ac] = token;
+		ac++;
+		token = strtok(NULL, " \t");
+	}
+	args[ac] = NULL;
+
+	return (args);
+}
 
 /**
- * main - get file
- * @ac: number of arguments
- * @av: arguments
- * Return: 0 (success)
+ * execute_cmds - executes monty command
+ * @line: line with opcodes
+ * @line_number: monty instructions line number
  */
 
-int main(int ac, char **av)
+void execute_cmds(char *line, unsigned int line_number)
 {
-	(void)av;
+	char *instruction, **args;
+	int i = 0, j = 0;
+	instruction_t ops[] = {
+		{"push", handle_push},
+		{"pall", handle_pall},
+		{"pop", handle_pop},
+		{"pint", handle_pint},
+		{"add", handle_add},
+		{"swap", handle_swap},
+		{NULL, NULL}};
 
-	if (ac != 2)
+	args = tokenize_line(line);
+	while (args[i] != NULL)
 	{
-		dprintf(2, "USAGE: monty file\n");
-		exit(EXIT_FAILURE);
+		j = 0;
+		instruction = args[i];
+		value = args[(i + 1)];
+		while (ops[j].opcode != NULL)
+		{
+			if (strcmp(ops[j].opcode, instruction) == 0)
+			{
+				i += 2;
+				ops[j].f(stack, line_number);
+				break;
+			}
+			j++;
+		}
+		if (ops[j].opcode == NULL)
+		{
+			dprintf(2, "L%d: unknown instruction %s\n", line_number, instruction);
+			exit(EXIT_FAILURE);
+		}
 	}
-	stack = malloc(sizeof(stack_t *));
-	if (!stack)
-	{
-		dprintf(2, "Error: malloc failed\n");
-		exit(EXIT_FAILURE);
-	}
-	*stack = NULL;
-	read_monty_file(av[1]);
-
-	if (*stack)
-		free(*stack);
-	free(stack);
-
-	return (0);
 }
