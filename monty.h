@@ -59,7 +59,7 @@ void handle_sub(stack_t **head, unsigned int line_number);
 void handle_mul(stack_t **head, unsigned int line_number);
 void handle_div(stack_t **head, unsigned int line_number);
 void handle_nop(stack_t **head, unsigned int line_number);
-void free_all(stack_t *head);
+void free_all(stack_t **head);
 extern stack_t **stack;
 
 #endif
