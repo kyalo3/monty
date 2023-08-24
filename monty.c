@@ -21,6 +21,8 @@ void execute_cmds(char *line, unsigned int line_number)
 	instruction_t ops[] = {
 		{"push", handle_push},
 		{"pall", handle_pall},
+		{"pint", handle_pint},
+		{"padd", handle_add},
 		{NULL, NULL}};
 
 	token = strtok(line, " \t");

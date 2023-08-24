@@ -12,10 +12,10 @@ bool is_integer(const char *str)
 {
 	int i = 0;
 
-	if (str == NULL || *str == "\0")
+	if (str == NULL || *str == '\0')
 		return (false);
 
-		if (str[0] == '-')
+	if (str[0] == '-')
 		i++;
 
 	for (; str[i] != '\0'; i++)
