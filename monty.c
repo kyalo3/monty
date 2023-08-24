@@ -96,6 +96,7 @@ void execute_cmds(char *line, unsigned int line_number)
 		{"padd", handle_add},
 		{"pop", handle_pop},
 		{"swap", handle_swap},
+		{"nop", handle_nop},
 		{NULL, NULL}};
 
 	token = strtok(line, " \t");
