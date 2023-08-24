@@ -8,15 +8,15 @@
 
 void execute_cmds(char *line, stack_t **stack, unsigned int line_number)
 {
-	char *args[MAX_LINE_LENGTH] = {NULL}, *token;
+    char *args[MAX_LINE_LENGTH] = {NULL}, *token;
 	int ac, i = 0, j;
 
 	instruction_t ops[] = {
-		{"push", handle_push},
+	    {"push", handle_push},
 		{"pall", handle_pall},
-		{"pint", handle_pint},
+		/*{"pint", handle_pint},
 		{"pop", handle_pop},
-		{"swap", handle_swap},
+		{"swap", handle_swap},*/
 		{NULL, NULL}};
 
 	if (line != NULL)
