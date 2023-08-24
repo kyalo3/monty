@@ -36,6 +36,7 @@ void handle_push(stack_t **head, unsigned int line_number)
     stack_t *new_node;
     int n_value;
 
+    printf("%s", arg);
     if (arg == NULL)
     {
         dprintf(2, "L%d: usage: push integer\n", line_number);
@@ -64,5 +65,4 @@ void handle_push(stack_t **head, unsigned int line_number)
         (*head)->prev = new_node;
         *head = new_node;
     }
-    printf("done");
 }
