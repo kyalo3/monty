@@ -118,7 +118,17 @@ void execute_cmds(char *line, unsigned int line_number)
 			j++;
 		}
 		if (args[i] && ops[j].opcode == NULL)
-			break;
+		{
+			if (i = 0)
+			{
+				free(args);
+				free_all();
+				dprintf(2, "L%d: unknown instruction %s\n", line_number, instruction);
+				exit(EXIT_FAILURE);
+			}
+			else
+				break;
+		}
 	}
 	free(args);
 }
