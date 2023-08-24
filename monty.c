@@ -23,15 +23,12 @@ void read_monty_file(const char *filename)
 		exit(EXIT_FAILURE);
 	}
 	for (i = 0; i < MAX_LINES; i++)
-	{
 		lines[i] = NULL;
-	}
 	while ((chars_read = read(fd, buffer, BUFFERSIZE)) > 0 &&
 		   line_number < MAX_LINES)
 	{
 		buffer[chars_read] = '\0';
 		line = strtok(buffer, "\n");
-
 		while (line != NULL)
 		{
 			lines[line_number] = strdup(line);
@@ -39,9 +36,7 @@ void read_monty_file(const char *filename)
 			{
 				close(fd);
 				for (i = 0; i < line_number; i++)
-				{
 					free(lines[i]);
-				}
 				free_all();
 				exit(EXIT_FAILURE);
 			}
@@ -49,14 +44,10 @@ void read_monty_file(const char *filename)
 			line_number++;
 		}
 		for (i = 0; lines[i]; i++)
-		{
 			execute_cmds(lines[i], (i + 1));
-		}
 	}
 	for (i = 0; i < line_number; i++)
-	{
 		free(lines[i]);
-	}
 	close(fd);
 }
 /**
