@@ -117,9 +117,9 @@ void execute_cmds(char *line, unsigned int line_number)
 			}
 			j++;
 		}
-		if (args[i] && ops[j].opcode == NULL)
+		if (instruction && ops[j].opcode == NULL)
 		{
-			if (i = 0)
+			if ((i - 1) == 0)
 			{
 				free(args);
 				free_all();
