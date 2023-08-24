@@ -25,9 +25,9 @@ int main(int ac, char **av)
 	*stack = NULL;
 	read_monty_file(av[1]);
 
-	/*if (*stack)
+	if (*stack)
 		free(*stack);
-	free(stack);*/
+	free(stack);
 
 	return (0);
 }
