@@ -1,15 +1,15 @@
 #include "monty.h"
 
-void handle_pall(stack_t **head, int number)
+void handle_pall(stack_t **head, unsigned int line_number)
 {
-    /*(void)number;*/
-    stack_t *current = *head;
+    stack_t *current;
 
-    (void)number;
+    (void)line_number;
+    current = *head;
 
     while (current != NULL)
     {
-        printf("%d\n", current->n);
+        dprintf(1, "%d\n", current->n);
         current = current->next;
     }
 }

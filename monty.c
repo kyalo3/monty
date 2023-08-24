@@ -2,6 +2,9 @@
 #define BUFFERSIZE 1024
 #define MAX_LINE_LENGTH 256
 
+char *value = "";
+stack_t **stack = NULL;
+
 /**
  * execute_cmds - executes monty command
  * @line: line with opcodes
@@ -9,13 +12,13 @@
  * @line_number: monty instructions line number
  */
 
-void execute_cmds(char *line, stack_t **stack, unsigned int line_number)
+void execute_cmds(char *line, unsigned int line_number)
 {
-	char *args[MAX_LINE_LENGTH] = {NULL}, *token;
+	char *args[MAX_LINE_LENGTH] = {NULL}, *token, *instruction;
 	int ac, i = 0, j = 0;
 
 	instruction_t ops[] = {
-	    {"push", handle_push},
+		{"push", handle_push},
 		{"pall", handle_pall},
 		/*{"pint", handle_pint},*/
 		{"pop", handle_pop},
@@ -24,32 +27,38 @@ void execute_cmds(char *line, stack_t **stack, unsigned int line_number)
 
 	if (line != NULL)
 	{
-		token = strtok(line, " ");
+		token = strtok(line, " \t");
 		ac = 0;
 		while (token != NULL && ac < MAX_LINE_LENGTH - 1)
 		{
 			args[ac] = token;
 			ac++;
-			token = strtok(NULL, " ");
+			token = strtok(NULL, " \t");
 		}
 		args[ac] = NULL;
+
 		while (args[i] != NULL)
 		{
-            j = 0;
+			j = 0;
+			instruction = args[i];
+			value = args[(i + 1)];
 			while (ops[j].opcode != NULL)
 			{
-				if (strcmp(ops[j].opcode, args[i]) == 0)
+				if (strcmp(ops[j].opcode, instruction) == 0)
 				{
 					i++;
-					ops[j].f(stack, atoi(args[i]));
+					ops[j].f(stack, line_number);
+					break;
 				}
 				j++;
 			}
+			if (ops[j].opcode == NULL)
+			{
+				dprintf(2, "L%d: unknown instruction %s\n", line_number, instruction);
+				exit(EXIT_FAILURE);
+			}
 			i++;
-			dprintf(2, "L%d: unknown instruction %s\n", line_number, args[i]);
-			exit(EXIT_FAILURE);
 		}
-		return;
 	}
 }
 
@@ -63,8 +72,8 @@ void read_monty_file(const char *filename)
 	ssize_t fd, chars_read;
 	char buffer[BUFFERSIZE], *line;
 	int line_number = 1;
-	stack_t *stack = NULL;
 
+	stack = NULL;
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
@@ -78,7 +87,7 @@ void read_monty_file(const char *filename)
 
 		while (line != NULL)
 		{
-			execute_cmds(line, &stack, line_number);
+			execute_cmds(line, line_number);
 			line = strtok(NULL, "\n");
 			line_number++;
 		}
