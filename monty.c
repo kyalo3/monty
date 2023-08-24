@@ -17,9 +17,9 @@ void execute_cmds(char *line, stack_t **stack, unsigned int line_number)
 	instruction_t ops[] = {
 	    {"push", handle_push},
 		{"pall", handle_pall},
-		{"pint", handle_pint},
+		/*{"pint", handle_pint},*/
 		{"pop", handle_pop},
-		{"swap", handle_swap},
+		/*{"swap", handle_swap},*/
 		{NULL, NULL}};
 
 	if (line != NULL)
@@ -35,6 +35,7 @@ void execute_cmds(char *line, stack_t **stack, unsigned int line_number)
 		args[ac] = NULL;
 		while (args[i] != NULL)
 		{
+            j = 0;
 			while (ops[j].opcode != NULL)
 			{
 				if (strcmp(ops[j].opcode, args[i]) == 0)
@@ -45,7 +46,7 @@ void execute_cmds(char *line, stack_t **stack, unsigned int line_number)
 				j++;
 			}
 			i++;
-			dprintf(2, "L%d: unknown instruction %s\n", args[i]);
+			dprintf(2, "L%d: unknown instruction %s\n", line_number, args[i]);
 			exit(EXIT_FAILURE);
 		}
 		return;
@@ -59,7 +60,7 @@ void execute_cmds(char *line, stack_t **stack, unsigned int line_number)
 
 void read_monty_file(const char *filename)
 {
-	ssize_t fd, chars_read, chars_written;
+	ssize_t fd, chars_read;
 	char buffer[BUFFERSIZE], *line;
 	int line_number = 1;
 	stack_t *stack = NULL;
