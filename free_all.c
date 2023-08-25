@@ -18,4 +18,6 @@ void free_all(void)
 		current = next;
 	}
 	*stack = NULL;
+	free(*stack);
+	free(stack);
 }

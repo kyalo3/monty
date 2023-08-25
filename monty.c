@@ -13,7 +13,7 @@ void read_monty_file(const char *filename)
 	ssize_t chars_read;
 	char buffer[BUFFERSIZE];
 	char *lines[MAX_LINES], *line;
-	int line_number = 1, i;
+	int line_number = 0, i;
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
@@ -43,7 +43,7 @@ void read_monty_file(const char *filename)
 			line = strtok(NULL, "\n");
 			line_number++;
 		}
-		for (i = 1; lines[i]; i++)
+		for (i = 0; lines[i]; i++)
 			execute_cmds(lines[i], (i + 1));
 	}
 	for (i = 0; i < line_number; i++)
