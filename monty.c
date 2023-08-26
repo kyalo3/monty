@@ -11,9 +11,9 @@ void read_monty_file(const char *filename)
 {
 	int fd;
 	ssize_t chars_read;
-	char buffer[BUFFERSIZE];
-	char *lines[MAX_LINES], *line;
-	int line_number = 0, i;
+	char buffer[BUFFERSIZE], *buffer_pos;
+	char *line, *newline_pos;
+	int line_number = 1;
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
@@ -22,32 +22,30 @@ void read_monty_file(const char *filename)
 		dprintf(2, "Error: Can't open file %s\n", filename);
 		exit(EXIT_FAILURE);
 	}
-	for (i = 0; i < MAX_LINES; i++)
-		lines[i] = NULL;
+	buffer_pos = buffer;
 	while ((chars_read = read(fd, buffer, BUFFERSIZE)) > 0 &&
 		   line_number < MAX_LINES)
 	{
 		buffer[chars_read] = '\0';
-		line = strtok(buffer, "\n");
-		while (line != NULL)
+		while (*buffer_pos != '\0')
 		{
-			lines[line_number] = strdup(line);
-			if (lines[line_number] == NULL)
+			newline_pos = strchr(buffer_pos, '\n');
+			if (newline_pos != NULL)
 			{
-				close(fd);
-				for (i = 0; i < line_number; i++)
-					free(lines[i]);
-				free_all();
-				exit(EXIT_FAILURE);
+				*newline_pos = '\0';
+				line = buffer_pos;
+				buffer_pos = newline_pos + 1;
 			}
-			line = strtok(NULL, "\n");
+			else
+			{
+				line = buffer_pos;
+				buffer_pos += strlen(buffer_pos);
+			}
+			execute_cmds(line, line_number);
 			line_number++;
 		}
-		for (i = 0; lines[i]; i++)
-			execute_cmds(lines[i], (i + 1));
 	}
-	for (i = 0; i < line_number; i++)
-		free(lines[i]);
+	buffer_pos = buffer;
 	close(fd);
 }
 /**
@@ -71,12 +69,12 @@ char **tokenize_line(char *line)
 	{
 		args[i] = NULL;
 	}
-	token = strtok(line, " \t");
+	token = strtok(line, " \t\n");
 	while (token != NULL && ac < MAX_LINE_LENGTH - 1)
 	{
 		args[ac] = token;
 		ac++;
-		token = strtok(NULL, " \t");
+		token = strtok(NULL, " \t\n");
 	}
 	args[ac] = NULL;
 	return (args);
@@ -102,6 +100,7 @@ void execute_cmds(char *line, unsigned int line_number)
 		{NULL, NULL}};
 
 	args = tokenize_line(line);
+	i = 0;
 	while (args[i] != NULL)
 	{
 		j = 0;
