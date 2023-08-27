@@ -14,7 +14,9 @@
 #include <string.h>
 #include <ctype.h>
 
+extern char *line;
 extern char *value;
+extern char **args;
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -47,8 +49,10 @@ typedef struct instruction_s
 } instruction_t;
 
 void read_monty_file(const char *filename);
+void tokenize_line(char *line);
 void execute_cmds(char *line, unsigned int line_number);
 void free_all(void);
+void free_global_memory(void);
 
 void handle_push(stack_t **head, unsigned int line_number);
 void handle_pall(stack_t **head, unsigned int line_number);
