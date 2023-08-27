@@ -87,7 +87,7 @@ void execute_cmds(char *line, unsigned int line_number)
 		{
 			i++;
 		}
-		if (*instruction == '#')
+		if (instruction[0] == '#')
 			return;
 		else
 			execute_opcode(instruction, line_number);
