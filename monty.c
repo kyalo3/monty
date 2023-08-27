@@ -70,7 +70,7 @@ void tokenize_line(char *line)
 
 void execute_cmds(char *line, unsigned int line_number)
 {
-	char *instruction;
+	char *instruction, *instr_in_line;
 	int i = 0;
 
 	tokenize_line(line);
@@ -87,7 +87,8 @@ void execute_cmds(char *line, unsigned int line_number)
 		{
 			i++;
 		}
-		if (instruction[0] != '#')
+		instr_in_line = strstr(line, instruction);
+		if (instruction[0] != '\0' && instruction[0] != '#' && instr_in_line)
 			execute_opcode(instruction, line_number);
 		else
 			break;
