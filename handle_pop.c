@@ -20,8 +20,9 @@ void handle_pop(stack_t **head, unsigned int line_number)
 	}
 
 	temp = *head;
-	*head = (*head)->next;
-	if (*head != NULL)
-		(*head)->prev = NULL;
+	if (temp->next)
+		*head = temp->next;
+	else
+		*head = NULL;
 	free(temp);
 }
