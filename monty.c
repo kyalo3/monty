@@ -63,7 +63,7 @@ void tokenize_line(char *line)
 }
 
 /**
- * execute_cmds - executes monty command
+ * execute_cmds - Tokenizes and executes monty commands
  * @line: line with opcodes
  * @line_number: monty instructions line number
  */
@@ -71,7 +71,36 @@ void tokenize_line(char *line)
 void execute_cmds(char *line, unsigned int line_number)
 {
 	char *instruction;
-	int i = 0, j = 0;
+	int i = 0;
+
+	tokenize_line(line);
+	for (i = 0; args[i] != NULL;)
+	{
+		instruction = args[i];
+
+		if (strcmp(instruction, "push") == 0)
+		{
+			value = args[++i];
+			i++;
+		}
+		else
+		{
+			i++;
+		}
+
+		execute_opcode(instruction, line_number);
+	}
+	free(args);
+}
+
+/**
+ * execute_opcode - Executes a specific opcode
+ * @opcode: The opcode to execute
+ * @line_number: The line number of the instruction
+ */
+void execute_opcode(const char *opcode, unsigned int line_number)
+{
+	int j = 0;
 	instruction_t ops[] = {
 		{"push", handle_push},
 		{"pall", handle_pall},
@@ -79,33 +108,23 @@ void execute_cmds(char *line, unsigned int line_number)
 		{"pint", handle_pint},
 		{"add", handle_add},
 		{"swap", handle_swap},
+		{"nop", handle_nop},
+		{"sub", handle_sub},
+		{"div", handle_div},
+		{"mul", handle_mul},
+		{"mod", handle_mod},
 		{NULL, NULL}};
 
-	tokenize_line(line);
-	while (args[i] != NULL)
+	while (ops[j].opcode != NULL)
 	{
-		j = 0;
-		instruction = args[i];
-		value = args[(i + 1)];
-		while (ops[j].opcode != NULL)
+		if (strcmp(ops[j].opcode, opcode) == 0)
 		{
-			if (strcmp(ops[j].opcode, instruction) == 0)
-			{
-				if (strcmp(ops[j].opcode, "push") == 0)
-					i += 2;
-				else
-					i += 1;
-				ops[j].f(stack, line_number);
-				break;
-			}
-			j++;
+			ops[j].f(stack, line_number);
+			return;
 		}
-		if (instruction && ops[j].opcode == NULL)
-		{
-			free_all();
-			dprintf(2, "L%d: unknown instruction %s\n", line_number, instruction);
-			exit(EXIT_FAILURE);
-		}
+		j++;
 	}
-	free(args);
+	free_all();
+	dprintf(2, "L%d: unknown instruction %s\n", line_number, opcode);
+	exit(EXIT_FAILURE);
 }
