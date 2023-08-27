@@ -71,7 +71,7 @@ void tokenize_line(char *line)
 void execute_cmds(char *line, unsigned int line_number)
 {
 	char *instruction;
-	int i = 0, j = 0, k;
+	int i = 0, j = 0;
 	instruction_t ops[] = {
 		{"push", handle_push},
 		{"pall", handle_pall},
@@ -87,26 +87,20 @@ void execute_cmds(char *line, unsigned int line_number)
 		j = 0;
 		instruction = args[i];
 		value = args[(i + 1)];
-		for (k = 0; instruction[k]; k++)
-		{
-			instruction[k] = tolower(instruction[k]);
-		}
 		while (ops[j].opcode != NULL)
 		{
 			if (strcmp(ops[j].opcode, instruction) == 0)
 			{
-				i += 2;
+				if (strcmp(ops[j].opcode, "push") == 0)
+					i += 2;
+				else
+					i += 1;
 				ops[j].f(stack, line_number);
 				break;
 			}
 			j++;
 		}
-		if (instruction && ops[j].opcode == NULL)
-		{
-			free_all();
-			dprintf(2, "L%d: unknown instruction %s\n", line_number, instruction);
-			exit(EXIT_FAILURE);
-		}
+		i++;
 	}
 	free(args);
 }
