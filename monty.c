@@ -100,7 +100,12 @@ void execute_cmds(char *line, unsigned int line_number)
 			}
 			j++;
 		}
-		i++;
+		if (instruction && ops[j].opcode == NULL)
+		{
+			free_all();
+			dprintf(2, "L%d: unknown instruction %s\n", line_number, instruction);
+			exit(EXIT_FAILURE);
+		}
 	}
 	free(args);
 }
