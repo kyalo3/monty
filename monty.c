@@ -87,10 +87,10 @@ void execute_cmds(char *line, unsigned int line_number)
 		{
 			i++;
 		}
-		if (instruction[0] == '#')
-			return;
-		else
+		if (instruction[0] != '#')
 			execute_opcode(instruction, line_number);
+		else
+			break;
 	}
 	free(args);
 }
@@ -126,10 +126,7 @@ void execute_opcode(const char *opcode, unsigned int line_number)
 		}
 		j++;
 	}
-	if (opcode && ops[j].opcode == NULL)
-	{
-		free_all();
-		dprintf(2, "L%d: unknown instruction %s\n", line_number, opcode);
-		exit(EXIT_FAILURE);
-	}
+	free_all();
+	dprintf(2, "L%d: unknown instruction %s\n", line_number, opcode);
+	exit(EXIT_FAILURE);
 }
