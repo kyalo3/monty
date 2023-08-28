@@ -15,7 +15,11 @@ int main(int ac, char **av)
 		dprintf(2, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
+<<<<<<< HEAD
 	/*stack = NULL;
+=======
+	stack = NULL;
+>>>>>>> main
 	stack = malloc(sizeof(stack_t *));
 	if (!stack)
 	{
@@ -24,8 +28,12 @@ int main(int ac, char **av)
 	}
 	*stack = NULL;*/
 	read_monty_file(av[1]);
+<<<<<<< HEAD
 
 	/*if (*stack)
 		free(*stack);*/
+=======
+	free_all();
+>>>>>>> main
 	return (0);
 }
